@@ -1,0 +1,45 @@
+<h2>{{ subtitulo }}</h2>
+
+<ul>
+  @for (usuario of Usuarios(); track usuario.id) {
+  <li>
+    #{{ usuario.id }}
+    <input type="text" 
+           [(ngModel)]="usuario.username"
+           (keydown.enter)="modificarUsuario(usuario)">
+
+    <select [(ngModel)]="usuario.rol" 
+            (change)="modificarUsuario(usuario)">
+      @for (rol of rolesPermitidos; track rol) {
+        <option [value]="rol">{{ rol }}</option>
+      }
+    </select>
+
+    <label>
+      <input type="checkbox" 
+             [(ngModel)]="usuario.estado"
+             (change)="modificarUsuario(usuario)">
+      Activo
+    </label>
+
+    <button (click)="borrarUsuario(usuario.id)">🗑️</button>
+  </li>
+  } @empty {
+  <li>No hay usuarios registrados</li>
+  }
+  
+  <li class="nuevo-usuario">
+    <input [(ngModel)]="nuevoUsername" placeholder="Usuario" type="text">
+    <input [(ngModel)]="nuevoPassword" placeholder="Contraseña" type="password">
+    <select [(ngModel)]="nuevoRol">
+      @for (r of rolesPermitidos; track r) {
+        <option [value]="r">{{ r }}</option>
+      }
+    </select>
+    <button (click)="agregarUsuario()">
+      ➕ Agregar
+    </button>
+  </li>
+</ul>
+
+<pre><code>{{ Usuarios() | json }}</code></pre>

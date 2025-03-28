@@ -1,0 +1,82 @@
+<h2>{{ subtitulo }}</h2>
+
+@if (loading()) {
+  <p>Cargando distritos...</p>
+}
+
+@if (errorMessage()) {
+  <div class="error-message">
+    {{ errorMessage() }}
+  </div>
+}
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Distrito</th>
+      <th>Canton ID</th>
+      <th>Valoración</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (distrito of Distritos(); track distrito.DistritoId) {
+      <tr>
+        <td>
+          <input type="number" 
+                 [(ngModel)]="distrito.DistritoId" 
+                 placeholder="ID"
+                 readonly>
+        </td>
+        <td>
+          <input type="text" 
+                 [(ngModel)]="distrito.Distrito"
+                 (keydown.enter)="modificarDistrito(distrito)">
+        </td>
+        <td>
+          <input type="number" 
+                 [(ngModel)]="distrito.CantonId"
+                 (keydown.enter)="modificarDistrito(distrito)">
+        </td>
+        <td>
+          <input type="text" 
+                 [(ngModel)]="distrito.Valoracion"
+                 (keydown.enter)="modificarDistrito(distrito)">
+        </td>
+        <td>
+          <button (click)="modificarDistrito(distrito)" 
+                  [disabled]="loading()">Editar</button>
+          <button (click)="borrarDistrito(distrito.DistritoId)"
+                  [disabled]="loading()">Borrar</button>
+        </td>
+      </tr>
+    }
+    
+    <!-- Fila para agregar nuevos distritos -->
+    <tr>
+      <td></td>
+      <td>
+        <input type="text" 
+               [(ngModel)]="nuevoDistrito().Distrito"
+               placeholder="Nombre">
+      </td>
+      <td>
+        <input type="number" 
+               [(ngModel)]="nuevoDistrito().CantonId"
+               placeholder="Canton ID">
+      </td>
+      <td>
+        <input type="text" 
+               [(ngModel)]="nuevoDistrito().Valoracion"
+               placeholder="Valoración">
+      </td>
+      <td>
+        <button (click)="agregarDistrito()"
+                [disabled]="loading() || !nuevoDistrito().Distrito || !nuevoDistrito().CantonId">
+          Agregar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

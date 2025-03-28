@@ -1,0 +1,44 @@
+<h2>{{ subtitulo }}</h2>
+
+<ul>
+    @for (curso of Cursos(); track curso.id) {
+    <li>
+        <input type="number" [(ngModel)]="curso.id" placeholder="ID" readonly>
+        <input type="text" [(ngModel)]="curso.nombre" placeholder="Nombre"
+               (keydown.enter)="modificarCurso(curso)">
+        <input type="text" [(ngModel)]="curso.codigo" placeholder="Código"
+               (keydown.enter)="modificarCurso(curso)">
+        <input type="number" [(ngModel)]="curso.docenteId" placeholder="Docente ID"
+               (keydown.enter)="modificarCurso(curso)">
+        <input type="text" [(ngModel)]="curso.horario" placeholder="Horario"
+               (keydown.enter)="modificarCurso(curso)">
+        <input type="text" [(ngModel)]="curso.aula" placeholder="Aula"
+               (keydown.enter)="modificarCurso(curso)">
+        <input type="text" [(ngModel)]="curso.periodo" placeholder="Periodo"
+               (keydown.enter)="modificarCurso(curso)">
+        <input type="number" [(ngModel)]="curso.ofertaAcademicaid" placeholder="Oferta ID">
+        <button (click)="modificarCurso(curso)">Guardar</button>
+        <button (click)="borrarCurso(curso.id)">Eliminar</button>
+    </li>
+    } @empty {
+    <li>No hay cursos registrados</li>
+    }
+    
+    <li class="nuevo-curso">
+        <input type="number" [(ngModel)]="nuevoPlanEstudioId" placeholder="Plan Estudio ID" required>
+        <input type="text" [(ngModel)]="nuevoNombre" placeholder="Nombre del curso" required>
+        <input type="text" [(ngModel)]="nuevoCodigo" placeholder="Código único" required>
+        <input type="number" [(ngModel)]="nuevoDocenteId" placeholder="ID Docente" required>
+        <input type="text" [(ngModel)]="nuevoHorario" placeholder="Horario" required>
+        <input type="text" [(ngModel)]="nuevoAula" placeholder="Aula" required>
+        <input type="text" [(ngModel)]="nuevoPeriodo" placeholder="Periodo" required>
+        <input type="number" [(ngModel)]="nuevoOfertaId" placeholder="Oferta ID (opcional)">
+        <button (click)="agregarCurso()">Agregar curso</button>
+    </li>
+</ul>
+
+<pre>
+    <code>
+        {{ Cursos() | json }}
+    </code>
+</pre>

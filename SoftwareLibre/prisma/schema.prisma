@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl  = env("SHADOW_DATABASE_URL")
+}
+
+
+model Provincias {
+  ProvinciaId Int @id @default(autoincrement())
+  Provincia String
+  Cantones Cantones[] @relation("ModeloDeProvincias")
+  FechaDeCreacion DateTime @default(now())
+  ActualizadoEn DateTime @default(now()) @updatedAt
+
+  Docente Docente[]
+
+  Estudiante Estudiante[]
+}
+
+
+model Cantones {
+  CantonId Int @id @default(autoincrement())
+  Canton String
+  Provincias Provincias @relation("ModeloDeProvincias", fields: [ProvinciaId], references: [ProvinciaId])
+  ProvinciaId Int
+  Distritos Distritos[]
+  FechaDeCreacion DateTime @default(now())
+  ActualizadoEn DateTime @default(now()) @updatedAt
+}
+
+
+model Distritos {
+  DistritoId Int @id @default(autoincrement())
+  Distrito String
+  Cantones Cantones @relation(fields: [CantonId], references: [CantonId])
+  CantonId Int
+  FechaDeCreacion DateTime @default(now())
+  ActualizadoEn DateTime @default(now()) @updatedAt
+  Valoracion Valoracion @default(Bueno)
+}
+
+
+enum Valoracion {
+  Excelente
+  Bueno
+  Regular
+}
+
+enum Rol { 
+  ADMINISTRADOR 
+  DOCENTE 
+  ESTUDIANTE 
+}
+
+
+model Usuarios { 
+  id             Int        @id @default(autoincrement()) 
+  username       String     @unique 
+  password       String 
+  rol            Rol 
+  estado         Boolean 
+  auditoria      Auditoria[] 
+}
+
+
+model Auditoria { 
+  id             Int        @id @default(autoincrement()) 
+  usuarioId      Int 
+  accion         String 
+  fecha_hora     DateTime 
+  modulo_afectado String 
+  usuario        Usuarios   @relation(fields: [usuarioId], references: [id]) 
+}
+
+
+model Docente { 
+  id             Int        @id @default(autoincrement()) 
+  cedula         String     @unique 
+  nombre         String 
+  apellido1      String 
+  apellido2      String 
+  direccion      String 
+  fecha_nacimiento DateTime 
+  telefono       String 
+  correo         String     @unique 
+  provinciaId    Int 
+  provincia      Provincias @relation(fields: [provinciaId], references: [ProvinciaId]) 
+  cursos         Cursos[] 
+}
+
+
+model Estudiante { 
+  id             Int        @id @default(autoincrement()) 
+  cedula         String     @unique 
+  nombre         String 
+  apellido1      String 
+  apellido2      String 
+  fecha_nacimiento DateTime 
+  direccion      String 
+  telefono       String 
+  correo         String     @unique 
+  provinciaId    Int 
+  provincia      Provincias @relation(fields: [provinciaId], references: [ProvinciaId]) 
+  historico      HistoricoAcademico[] 
+}
+
+model Materias { 
+  id             Int        @id @default(autoincrement()) 
+  nombre         String 
+  nivel          Int 
+  codigo         String     @unique 
+  creditos       Int 
+  horas_teoricas Int 
+  horas_practicas Int 
+
+  PlanEstudios PlanEstudios[]
+}
+
+
+model PlanEstudios { 
+  id             Int        @id @default(autoincrement()) 
+  carrera        String 
+  codigo         String     @unique 
+  materias       Materias[] 
+  cursos         Cursos[] 
+}
+
+model OfertaAcademica { 
+  id             Int        @id @default(autoincrement()) 
+  periodo        String 
+  cursos         Cursos[] 
+}
+
+model Cursos { 
+  id             Int        @id @default(autoincrement()) 
+  planEstudioId  Int 
+  nombre         String 
+  codigo         String     @unique 
+  docenteId      Int 
+  horario        String 
+  aula           String 
+  periodo        String 
+  planEstudio    PlanEstudios @relation(fields: [planEstudioId], references: [id]) 
+  docente        Docente      @relation(fields: [docenteId], references: [id]) 
+  ofertaAcademica OfertaAcademica?  @relation(fields: [ofertaAcademicaid], references: [id])
+ofertaAcademicaid Int?
+  historico      HistoricoAcademico[] 
+}
+
+
+
+
+
+model HistoricoAcademico { 
+  id             Int        @id @default(autoincrement()) 
+  estudianteId   Int 
+  cursoId        Int 
+  nota_obtenida  Float 
+  periodo        String 
+  estudiante     Estudiante @relation(fields: [estudianteId], references: [id]) 
+  curso          Cursos     @relation(fields: [cursoId], references: [id]) 
+}

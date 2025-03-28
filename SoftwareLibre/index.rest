@@ -1,0 +1,449 @@
+################################################################################
+# ENDPOINTS DE PROVINCIA (Dadas por el profe)
+################################################################################
+###
+GET http://localhost/provincias/ HTTP/1.1
+
+###
+GET http://localhost/provincias/3 HTTP/1.1
+
+###
+POST http://localhost/provincias HTTP/1.1
+Content-Type: application/json
+
+{
+  "Provincia": "Nueva provincia"
+}
+
+###
+DELETE http://localhost/provincias/10 HTTP/1.1
+Content-Type: application/json
+
+###
+PUT http://localhost/provincias/7 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Provincia": "Actualización de la provincia 7"
+}
+
+
+###Extra de mi proyecto
+
+################################################################################
+# ENDPOINTS DE CANTONES
+################################################################################
+
+### GET: Lista todos los cantones
+GET http://localhost/cantones/ HTTP/1.1
+
+### GET: Obtén el cantón con ID 3
+GET http://localhost/cantones/3 HTTP/1.1
+
+### POST: Crea un nuevo cantón
+POST http://localhost/cantones HTTP/1.1
+Content-Type: application/json
+
+{
+  "Canton": "Nuevo cantón",
+  "ProvinciaId": 1
+}
+
+### DELETE: Elimina el cantón con ID 10
+DELETE http://localhost/cantones/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el cantón con ID 13
+PUT http://localhost/cantones/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Canton": "Nuevo Cantón Actualizado",
+  "ProvinciaId": 2
+}
+
+################################################################################
+# ENDPOINTS DE DISTRITOS
+################################################################################
+
+### GET: Lista todos los distritos
+GET http://localhost/distritos/ HTTP/1.1
+
+### GET: Obtén el distrito con ID 3
+GET http://localhost/distritos/3 HTTP/1.1
+
+### POST: Crea un nuevo distrito
+POST http://localhost/distritos HTTP/1.1
+Content-Type: application/json
+
+{
+  "Distrito": "Nuevo distrito",
+  "CantonId": 1
+}
+
+### DELETE: Elimina el distrito con ID 10
+DELETE http://localhost/distritos/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el distrito con ID 13
+PUT http://localhost/distritos/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Distrito": "Distrito Actualizado",
+  "CantonId": 5,
+  "Valoracion": "Excelente"
+}
+
+################################################################################
+# ENDPOINTS DE USUARIOS
+################################################################################
+
+### Autenticar usuario
+POST http://localhost/usuarios/autenticar
+Content-Type: application/json
+
+{
+  "username": "Pruebita500@gmail.com",
+  "password": "Password123"
+}
+
+### Validar Token
+GET http://localhost/usuarios/validarToken
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiQURNSU5JU1RSQURPUiIsImlhdCI6MTc0MjU3MjE3NSwiZXhwIjoxNzQyNTc1Nzc1fQ.SfehqrXc5ISqyRr092uQ64ROcJgqY9pu-RhlNtxxQQU
+
+### GET: Lista todos los usuarios
+GET http://localhost/usuarios/ HTTP/1.1
+
+### GET: Obtén el usuario con ID 3
+GET http://localhost/usuarios/3 HTTP/1.1
+
+### POST: Crea un nuevo usuario
+POST http://localhost/usuarios HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "Pruebita500@gmail.com",
+  "password": "Password123",
+  "rol": "ADMINISTRADOR",
+  "estado": true
+}
+
+### DELETE: Elimina el usuario con ID 10
+DELETE http://localhost/usuarios/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el usuario con ID 13 (por ejemplo, cambiando el username)
+PUT http://localhost/usuarios/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "nuevoUsername",
+  "password": "nuevaPassword123",
+  "rol": "DOCENTE",
+  "estado": true
+}
+
+################################################################################
+# ENDPOINTS DE AUDITORIA
+################################################################################
+
+### GET: Lista todos los registros de auditoria
+GET http://localhost/auditoria/ HTTP/1.1
+
+### GET: Obtén el registro de auditoria con ID 3
+GET http://localhost/auditoria/3 HTTP/1.1
+
+### POST: Crea un nuevo registro de auditoria
+POST http://localhost/auditoria HTTP/1.1
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "accion": "Creación de auditoría",
+  "modulo_afectado": "Usuarios"
+}
+
+### DELETE: Elimina el registro de auditoria con ID 10
+DELETE http://localhost/auditoria/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el registro de auditoria con ID 13 (por ejemplo, cambiando la acción)
+PUT http://localhost/auditoria/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "accion": "Actualización de auditoría"
+}
+
+################################################################################
+# ENDPOINTS DE DOCENTE
+################################################################################
+
+### GET: Lista todos los docentes
+GET http://localhost/docente/ HTTP/1.1
+
+### GET: Obtén el docente con ID 3
+GET http://localhost/docente/3 HTTP/1.1
+
+### POST: Crea un nuevo docente
+POST http://localhost/docente HTTP/1.1
+Content-Type: application/json
+
+{
+  "cedula": "1234567890",
+  "nombre": "Juan",
+  "apellido1": "Pérez",
+  "apellido2": "García",
+  "direccion": "Calle Falsa 123",
+  "fecha_nacimiento": "1990-01-01",
+  "telefono": "555-1234",
+  "correo": "juan.perez@example.com",
+  "provinciaId": 1
+}
+
+### DELETE: Elimina el docente con ID 10
+DELETE http://localhost/docente/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el docente con ID 13 (por ejemplo, cambiando el nombre)
+PUT http://localhost/docente/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "cedula": "111222333",
+  "nombre": "María",
+  "apellido1": "Gómez Actualizada",
+  "apellido2": "Pérez",
+  "direccion": "Calle Nueva 456",
+  "fecha_nacimiento": "1985-03-20",
+  "telefono": "8888-8888",
+  "correo": "maria.nueva@example.com",
+  "provinciaId": 3
+}
+
+################################################################################
+# ENDPOINTS DE ESTUDIANTE
+################################################################################
+
+### GET: Lista todos los estudiantes
+GET http://localhost/estudiante/ HTTP/1.1
+
+### GET: Obtén el estudiante con ID 3
+GET http://localhost/estudiante/3 HTTP/1.1
+
+### POST: Crea un nuevo estudiante
+POST http://localhost/estudiante HTTP/1.1
+Content-Type: application/json
+
+{
+  "cedula": "0987654321",
+  "nombre": "María",
+  "apellido1": "López",
+  "apellido2": "Martínez",
+  "fecha_nacimiento": "2000-05-15",
+  "direccion": "Avenida Siempre Viva 742",
+  "telefono": "555-6789",
+  "correo": "maria.lopez@example.com",
+  "provinciaId": 1
+}
+
+### DELETE: Elimina el estudiante con ID 10
+DELETE http://localhost/estudiante/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el estudiante con ID 13 (todos los parámetros)
+PUT http://localhost/estudiante/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "cedula": "0987654321",
+  "nombre": "María Actualizada",
+  "apellido1": "López Modificado",
+  "apellido2": "Martínez Modificado",
+  "fecha_nacimiento": "2000-05-15",
+  "direccion": "Nueva Dirección 123",
+  "telefono": "555-0000",
+  "correo": "nuevo.correo@example.com",
+  "provinciaId": 2
+}
+
+################################################################################
+# ENDPOINTS DE MATERIAS
+################################################################################
+
+### GET: Lista todas las materias
+GET http://localhost/materias/ HTTP/1.1
+
+### GET: Obtén la materia con ID 3
+GET http://localhost/materias/3 HTTP/1.1
+
+### POST: Crea una nueva materia
+POST http://localhost/materias HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "Matemáticas",
+  "nivel": 1,
+  "codigo": "MAT101",
+  "creditos": 4,
+  "horas_teoricas": 3,
+  "horas_practicas": 1
+}
+
+### DELETE: Elimina la materia con ID 10
+DELETE http://localhost/materias/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza la materia con ID 13 (por ejemplo, cambiando el nombre)
+PUT http://localhost/materias/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "Física Cuántica",
+  "nivel": 2,
+  "codigo": "FIS202",
+  "creditos": 5,
+  "horas_teoricas": 4,
+  "horas_practicas": 2
+}
+
+################################################################################
+# ENDPOINTS DE PLANESTUDIOS
+################################################################################
+
+### GET: Lista todos los planes de estudios
+GET http://localhost/planEstudios/ HTTP/1.1
+
+### GET: Obtén el plan de estudios con ID 3
+GET http://localhost/planEstudios/3 HTTP/1.1
+
+### POST: Crea un nuevo plan de estudios
+POST http://localhost/planEstudios HTTP/1.1
+Content-Type: application/json
+
+{
+  "carrera": "Ingeniería en Sistemas",
+  "codigo": "IS101"
+}
+
+### DELETE: Elimina el plan de estudios con ID 10
+DELETE http://localhost/planEstudios/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el plan de estudios con ID 13 (por ejemplo, cambiando la carrera)
+PUT http://localhost/planEstudios/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "carrera": "Ingeniería Civil Actualizada",
+  "codigo": "IC202"
+}
+################################################################################
+# ENDPOINTS DE OFERTAACADEMICA
+################################################################################
+
+### GET: Lista todas las ofertas académicas
+GET http://localhost/ofertaAcademica/ HTTP/1.1
+
+### GET: Obtén la oferta académica con ID 3
+GET http://localhost/ofertaAcademica/3 HTTP/1.1
+
+### POST: Crea una nueva oferta académica
+POST http://localhost/ofertaAcademica HTTP/1.1
+Content-Type: application/json
+
+{
+  "periodo": "2025-1"
+}
+
+### DELETE: Elimina la oferta académica con ID 10
+DELETE http://localhost/ofertaAcademica/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza la oferta académica con ID 13 (por ejemplo, cambiando el periodo)
+PUT http://localhost/ofertaAcademica/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "periodo": "2025-2"
+}
+
+################################################################################
+# ENDPOINTS DE CURSOS
+################################################################################
+
+### GET: Lista todos los cursos
+GET http://localhost/cursos/ HTTP/1.1
+
+### GET: Obtén el curso con ID 3
+GET http://localhost/cursos/3 HTTP/1.1
+
+### POST: Crea un nuevo curso
+POST http://localhost/cursos HTTP/1.1
+Content-Type: application/json
+
+{
+  "planEstudioId": 1,
+  "nombre": "Programación I",
+  "codigo": "PROG101",
+  "docenteId": 1,
+  "horario": "Lunes y Miércoles 10:00-12:00",
+  "aula": "A101",
+  "periodo": "2025-1",
+  "ofertaAcademicaid": 1
+}
+
+### DELETE: Elimina el curso con ID 10
+DELETE http://localhost/cursos/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el curso con ID 13 (por ejemplo, cambiando el nombre)
+PUT http://localhost/cursos/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "planEstudioId": 2,
+  "nombre": "Programación II",
+  "codigo": "PROG202",
+  "docenteId": 3,
+  "horario": "Martes y Jueves 14:00-16:00",
+  "aula": "B203",
+  "periodo": "2025-2",
+  "ofertaAcademicaid": 2
+}
+################################################################################
+# ENDPOINTS DE HISTORICOACADEMICO
+################################################################################
+
+### GET: Lista todos los históricos académicos
+GET http://localhost/historicoAcademico/ HTTP/1.1
+
+### GET: Obtén el histórico académico con ID 3
+GET http://localhost/historicoAcademico/3 HTTP/1.1
+
+### POST: Crea un nuevo histórico académico
+POST http://localhost/historicoAcademico HTTP/1.1
+Content-Type: application/json
+
+{
+  "estudianteId": 1,
+  "cursoId": 1,
+  "nota_obtenida": 8.5,
+  "periodo": "2025-1"
+}
+
+### DELETE: Elimina el histórico académico con ID 10
+DELETE http://localhost/historicoAcademico/10 HTTP/1.1
+Content-Type: application/json
+
+### PUT: Actualiza el histórico académico con ID 13 (por ejemplo, cambiando la nota obtenida)
+PUT http://localhost/historicoAcademico/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "estudianteId": 2,
+  "cursoId": 5,
+  "nota_obtenida": 9.5,
+  "periodo": "2025-2"
+}

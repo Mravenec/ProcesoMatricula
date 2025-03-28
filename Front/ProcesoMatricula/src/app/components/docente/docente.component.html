@@ -1,0 +1,115 @@
+<h2>{{ subtitulo }}</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Cédula</th>
+      <th>Nombre</th>
+      <th>Primer apellido</th>
+      <th>Segundo apellido</th>
+      <th>Dirección</th>
+      <th>Fecha nacimiento</th>
+      <th>Teléfono</th>
+      <th>Correo</th>
+      <th>Provincia ID</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (docente of Docentes(); track docente.id) {
+      <tr>
+        <td>
+          <input type="number" [(ngModel)]="docente.id" placeholder="ID" readonly />
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="docente.cedula" placeholder="Cédula"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="docente.nombre" placeholder="Nombre"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="docente.apellido1" placeholder="Primer apellido"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="docente.apellido2" placeholder="Segundo apellido"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="docente.direccion" placeholder="Dirección"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="date"
+                 [ngModel]="docente.fecha_nacimiento | date:'yyyy-MM-dd'"
+                 (ngModelChange)="docente.fecha_nacimiento = $event"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="tel" [(ngModel)]="docente.telefono" placeholder="Teléfono"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="email" [(ngModel)]="docente.correo" placeholder="Correo"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <input type="number" [(ngModel)]="docente.provinciaId" placeholder="Provincia ID"
+                 (keydown.enter)="modificarDocente(docente)"/>
+        </td>
+        <td>
+          <button (click)="modificarDocente(docente)">Editar</button>
+          <button (click)="borrarDocente(docente.id)">Borrar</button>
+        </td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="11">No hay docentes registrados</td>
+      </tr>
+    }
+    
+    <!-- Formulario para agregar docente -->
+    <tr>
+      <td></td>
+      <td>
+        <input [(ngModel)]="nuevaCedula" placeholder="Cédula" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoNombre" placeholder="Nombre" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoApellido1" placeholder="Primer apellido" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoApellido2" placeholder="Segundo apellido" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevaDireccion" placeholder="Dirección" type="text">
+      </td>
+      <td>
+        <input type="date" [(ngModel)]="nuevaFechaNacimiento" placeholder="Fecha nacimiento">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoTelefono" placeholder="Teléfono" type="tel">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoCorreo" placeholder="Correo" type="email">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevaProvinciaId" placeholder="Provincia ID" type="number">
+      </td>
+      <td>
+        <button (click)="agregarDocente()">Agregar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<pre>
+  <code>
+    {{ Docentes() | json }}
+  </code>
+</pre>

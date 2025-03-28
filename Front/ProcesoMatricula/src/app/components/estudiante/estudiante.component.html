@@ -1,0 +1,115 @@
+<h2>{{ subtitulo }}</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Cédula</th>
+      <th>Nombre</th>
+      <th>Primer apellido</th>
+      <th>Segundo apellido</th>
+      <th>Fecha nacimiento</th>
+      <th>Dirección</th>
+      <th>Teléfono</th>
+      <th>Correo</th>
+      <th>Provincia ID</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (estudiante of Estudiantes(); track estudiante.id) {
+      <tr>
+        <td>
+          <input type="number" [(ngModel)]="estudiante.id" placeholder="ID" readonly />
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="estudiante.cedula" placeholder="Cédula" 
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="estudiante.nombre" placeholder="Nombre"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="estudiante.apellido1" placeholder="Primer apellido"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="estudiante.apellido2" placeholder="Segundo apellido"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="date"
+                 [ngModel]="estudiante.fecha_nacimiento | date:'yyyy-MM-dd'"
+                 (ngModelChange)="estudiante.fecha_nacimiento = $event"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="estudiante.direccion" placeholder="Dirección"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="tel" [(ngModel)]="estudiante.telefono" placeholder="Teléfono"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="email" [(ngModel)]="estudiante.correo" placeholder="Correo"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <input type="number" [(ngModel)]="estudiante.provinciaId" placeholder="Provincia ID"
+                 (keydown.enter)="modificarEstudiante(estudiante)"/>
+        </td>
+        <td>
+          <button (click)="modificarEstudiante(estudiante)">Editar</button>
+          <button (click)="borrarEstudiante(estudiante.id)">Borrar</button>
+        </td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="11">No hay estudiantes registrados</td>
+      </tr>
+    }
+    
+    <!-- Formulario para agregar estudiante -->
+    <tr>
+      <td></td>
+      <td>
+        <input [(ngModel)]="nuevaCedula" placeholder="Cédula" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoNombre" placeholder="Nombre" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoApellido1" placeholder="Primer apellido" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoApellido2" placeholder="Segundo apellido" type="text">
+      </td>
+      <td>
+        <input type="date" [(ngModel)]="nuevaFechaNacimiento" placeholder="Fecha nacimiento">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevaDireccion" placeholder="Dirección" type="text">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoTelefono" placeholder="Teléfono" type="tel">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevoCorreo" placeholder="Correo" type="email">
+      </td>
+      <td>
+        <input [(ngModel)]="nuevaProvinciaId" placeholder="Provincia ID" type="number">
+      </td>
+      <td>
+        <button (click)="agregarEstudiante()">Agregar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<pre>
+  <code>
+    {{ Estudiantes() | json }}
+  </code>
+</pre>
