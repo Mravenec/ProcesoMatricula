@@ -1,16 +1,31 @@
-<nav class="dropdownmenu">
-  <ul>
-    <li><a href="/provincias">Provincias</a></li>
-    <li><a href="/cantones">Cantones</a></li>
-    <li><a href="/distritos">Distritos</a></li>
-    <li><a href="/docente">Docentes</a></li>
-    <li><a href="/estudiante">Estudiantes</a></li>
-    <li><a href="/materias">Materias</a></li>
-    <li><a href="/plan-estudios">Plan de Estudios</a></li>
-    <li><a href="/cursos">Cursos</a></li>
-    <li><a href="/oferta-academica">Oferta Académica</a></li>
-    <li><a href="/historico-academico">Histórico Académico</a></li>
-    <li><a href="/usuarios">Usuarios</a></li>
-  </ul>
-</nav>
+@if (isLoggedIn && !isLoginRoute) {
+  <nav class="dropdownmenu">
+    <ul>
+      @if (userRole === 'ADMINISTRADOR') {
+        <li><a href="/provincias">Provincias</a></li>
+        <li><a href="/cantones">Cantones</a></li>
+        <li><a href="/distritos">Distritos</a></li>
+        <li><a href="/docente">Docentes</a></li>
+        <li><a href="/estudiante">Estudiantes</a></li>
+        <li><a href="/materias">Materias</a></li>
+        <li><a href="/plan-estudios">Plan de Estudios</a></li>
+        <li><a href="/cursos">Cursos</a></li>
+        <li><a href="/oferta-academica">Oferta Académica</a></li>
+        <li><a href="/historico-academico">Histórico Académico</a></li>
+        <li><a href="/usuarios">Usuarios</a></li>
+      }
+      @if (userRole === 'DOCENTE') {
+        <li><a href="/materias">Materias</a></li>
+        <li><a href="/plan-estudios">Plan de Estudios</a></li>
+        <li><a href="/cursos">Cursos</a></li>
+      }
+      @if (userRole === 'ESTUDIANTE') {
+        <li><a href="/oferta-academica">Oferta Académica</a></li>
+        <li><a href="/historico-academico">Histórico Académico</a></li>
+      }
+      <li><button (click)="cerrarSesion()">🔒 Cerrar Sesión</button></li>
+    </ul>
+  </nav>
+}
+
 <router-outlet />

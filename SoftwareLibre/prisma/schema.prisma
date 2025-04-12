@@ -170,3 +170,5 @@ model HistoricoAcademico {
   estudiante     Estudiante @relation(fields: [estudianteId], references: [id]) 
   curso          Cursos     @relation(fields: [cursoId], references: [id]) 
 }
+
+

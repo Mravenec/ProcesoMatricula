@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // <-- Añadir HttpHeaders
+import { Router } from '@angular/router'; // <-- Añadir Router
 import { JsonPipe } from '@angular/common';
 import { Usuario } from '../../model/usuarios'; 
 import { FormsModule } from '@angular/forms';
@@ -21,16 +22,35 @@ export class UsuariosComponent {
   public nuevoPassword: string = '';
   public nuevoRol: string = 'ESTUDIANTE';
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router // <-- Inyectar Router
+  ) {
     this.metodoGETUsuarios();
   }
 
   public metodoGETUsuarios() {
-    this.http.get<Usuario[]>('http://localhost/usuarios').subscribe({
+    const token = localStorage.getItem('token'); // <-- Obtener token
+    if (!token) {
+      this.router.navigate(['/login']); // <-- Redirigir si no hay token
+      return;
+    }
+
+    // Configurar headers con el token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get<Usuario[]>('http://localhost/usuarios', { headers }).subscribe({
       next: (response) => this.Usuarios.set(response),
-      error: (err) => console.error('Error fetching usuarios:', err)
+      error: (err) => {
+        console.error('Error fetching usuarios:', err);
+        if (err.status === 401 || err.status === 403) { // <-- Manejar errores de autenticación
+          localStorage.removeItem('token');
+          this.router.navigate(['/login']);
+        }
+      }
     });
   }
+
 
   public agregarUsuario() {
     const cuerpo = { 
@@ -70,3 +90,4 @@ export class UsuariosComponent {
     });
   }
 }
+

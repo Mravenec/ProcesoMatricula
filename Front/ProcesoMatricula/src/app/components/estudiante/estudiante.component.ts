@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 export class EstudiantesComponent {
   public subtitulo = 'Listado de Estudiantes';
   public Estudiantes = signal<Estudiante[]>([]);
+  public userRole: string = localStorage.getItem('userRole')!;
+  public userId: string = localStorage.getItem('userId')!;
 
   // Propiedades para nuevo estudiante
   public nuevaCedula: string = '';
@@ -29,14 +31,28 @@ export class EstudiantesComponent {
   constructor(private http: HttpClient) {
     this.metodoGETEstudiantes();
   }
-
+  /*
   public metodoGETEstudiantes() {
     this.http.get<Estudiante[]>('http://localhost/estudiante').subscribe({
       next: (response) => this.Estudiantes.set(response),
       error: (err) => console.error('Error fetching estudiantes:', err)
     });
   }
-
+  */
+  public metodoGETEstudiantes() {
+    this.http.get<Estudiante[]>('http://localhost/estudiante').subscribe({
+      next: (response) => {
+        // Si es ESTUDIANTE, filtrar solo sus datos
+        if (this.userRole === 'ESTUDIANTE') {
+          const filtered = response.filter(e => e.id === Number(this.userId));
+          this.Estudiantes.set(filtered);
+        } else {
+          this.Estudiantes.set(response);
+        }
+      },
+      error: (err) => console.error('Error fetching estudiantes:', err)
+    });
+  }
   public agregarEstudiante() {
     const cuerpo = {
       cedula: this.nuevaCedula,

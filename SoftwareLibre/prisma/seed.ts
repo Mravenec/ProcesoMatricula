@@ -1,5 +1,5 @@
 import { PrismaClient, Rol  } from '@prisma/client'
-
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient({ log: ["query"] })
 
@@ -2910,29 +2910,53 @@ async function seedHistoricoAcademico() {
 }
 
 // USUARIOS
-const usuariosData = [
-  // Mapear docentes (primeros 100)
-  ...docentesData.map(docente => ({
-    username: docente.correo,
-    password: 'Password123',
-    rol: Rol.DOCENTE,
-    estado: true
-  })),
-  
-  // Mapear estudiantes (siguientes 100)
-  ...estudiantesData.map(estudiante => ({
-    username: estudiante.correo,
-    password: 'Password123',
-    rol: Rol.ESTUDIANTE,
-    estado: true
-  })),
-  { username: 'kcamposgo90@gmail.com', password: 'Password123', rol: Rol.ADMINISTRADOR, estado: true }
-];
 
-  // Usuarios 
+//const usuariosService = new Usuarios();
+async function hashContrasenaComun() {
+  return await bcrypt.hash('Password123', 10);
+}
+
+// Datos de usuarios CON CONTRASEÑAS ENCRIPTADAS
+async function obtenerUsuariosData() {
+  const contrasenaHash = await hashContrasenaComun();
+
+  const docentesFiltered = docentesData.filter(docente => docente.correo !== 'kcamposgo90@gmail.com');
+  const estudiantesFiltered = estudiantesData.filter(estudiante => estudiante.correo !== 'kcamposgo90@gmail.com');
+
+  return [
+    // 1. Docentes
+    ...docentesFiltered.map(docente => ({
+      username: docente.correo,
+      password: contrasenaHash,
+      rol: Rol.DOCENTE,
+      estado: true
+    })),
+    
+    // 2. Estudiantes
+    ...estudiantesFiltered.map(estudiante => ({
+      username: estudiante.correo,
+      password: contrasenaHash,
+      rol: Rol.ESTUDIANTE,
+      estado: true
+    })),
+
+    // 3. Admin (último registro)
+    {
+      username: 'kcamposgo90@gmail.com',
+      password: contrasenaHash,
+      rol: Rol.ADMINISTRADOR,
+      estado: true
+    }
+  ];
+}
+
+
 async function seedUsuarios() {
+  const usuariosConHash = await obtenerUsuariosData();
+  
   await prisma.usuarios.createMany({
-    data: usuariosData,
+    data: usuariosConHash,
+    skipDuplicates: true,
   });
 }
 

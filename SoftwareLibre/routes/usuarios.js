@@ -23,7 +23,12 @@ Router.get("/validarToken", async (solicitud, respuesta) => {
   respuesta.json({ valido: true, datos: resultado });
 });
 // === NUEVAS RUTAS ===
-
+/*
+Router.get("/", async (solicitud, respuesta) => {
+  const listaUsuarios = await usuario.Listar();
+  respuesta.json(listaUsuarios);
+});
+*/
 Router.get("/:id", async (solicitud, respuesta) => {
   try {
     const usuario = await usuarios.Listar(solicitud.params.id);
@@ -58,6 +63,32 @@ Router.post('/', async (solicitud, respuesta) => {
   respuesta.json(await usuarios.Agregar(username, password, rol, estado));
 });
 
+// === RUTA MODIFICADA PARA LISTAR USUARIOS ===
+Router.get("/", async (solicitud, respuesta) => {
+  try {
+    // Validar token
+    const resultadoValidacion = await usuarios.ValidarToken(solicitud);
+    if (resultadoValidacion.error) {
+      return respuesta.status(401).json(resultadoValidacion);
+    }
 
+    // Verificar rol de administrador
+    if (resultadoValidacion.data !== "ADMINISTRADOR") {
+      return respuesta.status(403).json({ 
+        error: "Acceso denegado. Requiere rol de administrador" 
+      });
+    }
+
+    // Obtener y enviar lista de usuarios
+    const listaUsuarios = await usuarios.Listar();
+    respuesta.json(listaUsuarios);
+    
+  } catch (error) {
+    respuesta.status(500).json({ 
+      error: "Error interno del servidor",
+      detalle: error.message 
+    });
+  }
+});
 
 module.exports = Router;

@@ -95,6 +95,49 @@ Content-Type: application/json
   "Valoracion": "Excelente"
 }
 
+# Archivo: matricula.http
+# Pruebas completas del proceso de matrícula
+
+################################################################################
+# AUTENTICACIÓN
+################################################################################
+
+### Autenticar como estudiante
+POST http://localhost/usuarios/autenticar
+Content-Type: application/json
+
+{
+  "username": "alejandro.mendez@est.com",
+  "password": "Password123"
+}
+
+
+################################################################################
+# ENDPOINTS DE MATRÍCULA 
+################################################################################
+
+### 1. Obtener cursos disponibles para matrícula (periodo actual)
+GET http://localhost/matricula/cursos-disponibles
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+
+### 2. Matricularse en un curso
+POST http://localhost/matricula
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+Content-Type: application/json
+
+{
+  "cursoId": 5,
+  "periodo": "2025-1"
+}
+
+### 3. Ver mis matrículas activas
+GET http://localhost/matricula/mis-matriculas
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+
+### 4. Cancelar matrícula
+DELETE http://localhost/matricula/15  
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+
 ################################################################################
 # ENDPOINTS DE USUARIOS
 ################################################################################
@@ -104,17 +147,17 @@ POST http://localhost/usuarios/autenticar
 Content-Type: application/json
 
 {
-  "username": "Pruebita500@gmail.com",
+  "username": "mateo.soto@est.com",
   "password": "Password123"
 }
 
 ### Validar Token
 GET http://localhost/usuarios/validarToken
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiQURNSU5JU1RSQURPUiIsImlhdCI6MTc0MjU3MjE3NSwiZXhwIjoxNzQyNTc1Nzc1fQ.SfehqrXc5ISqyRr092uQ64ROcJgqY9pu-RhlNtxxQQU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
 
 ### GET: Lista todos los usuarios
 GET http://localhost/usuarios/ HTTP/1.1
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiQURNSU5JU1RSQURPUiIsImlkIjoyMDEsImlhdCI6MTc0NDQzNjY5MSwiZXhwIjoxNzQ0NDQwMjkxfQ.5jneTxTkXpxcJE7D-mMVtIpYWbNM8Rj6BHuVUNXjM7Q
 ### GET: Obtén el usuario con ID 3
 GET http://localhost/usuarios/3 HTTP/1.1
 

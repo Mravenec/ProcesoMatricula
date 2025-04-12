@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 export class DocenteComponent {
   public subtitulo = 'Listado de Docentes';
   public Docentes = signal<Docente[]>([]);
-
+  public userRole: string = localStorage.getItem('userRole')!;
+  public userId: string = localStorage.getItem('userId')!;
   // Propiedades para nuevo docente
   public nuevaCedula: string = '';
   public nuevoNombre: string = '';
@@ -31,12 +32,28 @@ export class DocenteComponent {
   }
 
   // GET: Obtener todos los docentes
+  /*
   public metodoGETDocentes() {
     this.http.get<Docente[]>('http://localhost/docente').subscribe({
       next: (response) => this.Docentes.set(response),
       error: (err) => console.error('Error fetching docentes:', err)
     });
   }
+*/
+public metodoGETDocentes() {
+  this.http.get<Docente[]>('http://localhost/docente').subscribe({
+    next: (response) => {
+      // Si es DOCENTE, filtrar solo sus datos
+      if (this.userRole === 'DOCENTE') {
+        const filtered = response.filter(d => d.id === Number(this.userId));
+        this.Docentes.set(filtered);
+      } else {
+        this.Docentes.set(response);
+      }
+    },
+    error: (err) => console.error('Error fetching docentes:', err)
+  });
+}
 
   // POST: Agregar docente
   public agregarDocente() {

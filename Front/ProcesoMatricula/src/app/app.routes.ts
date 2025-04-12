@@ -10,18 +10,84 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { ProvinciasComponent } from './components/provincias/provincias.component';
 import { CantonesComponent } from './components/canton/canton.component';
 import { DistritosComponent } from './components/distrito/distrito.component'; 
-
+import { authGuard } from './aplicacionmatricula/auth.guard'; // Importar el guardia
+import { LoginComponent } from './aplicacionmatricula/login/login.component'; // Importar componente de login
 
 export const routes: Routes = [
-    { path: 'docente', component: DocenteComponent },
-    { path: 'estudiante', component: EstudiantesComponent  },
-    { path: 'materias', component: MateriasComponent },
-    { path: 'plan-estudios', component: PlanEstudiosComponent },
-    { path: 'cursos', component: CursosComponent },
-    { path: 'oferta-academica', component: OfertaAcademicaComponent },
-    { path: 'historico-academico', component: HistoricoAcademicoComponent },
-    { path: 'usuarios', component: UsuariosComponent },
-    { path: 'provincias', component:ProvinciasComponent},
-    { path: 'cantones', component:CantonesComponent},
-    { path:'distritos', component:DistritosComponent},
-];
+    // Ruta de login (pública)
+    {
+      path: 'login',
+      component: LoginComponent
+    },
+  
+    // Rutas protegidas por el authGuard
+    {
+      path: 'docente',
+      component: DocenteComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'estudiante',
+      component: EstudiantesComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'materias',
+      component: MateriasComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'plan-estudios',
+      component: PlanEstudiosComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'cursos',
+      component: CursosComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'oferta-academica',
+      component: OfertaAcademicaComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'historico-academico',
+      component: HistoricoAcademicoComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'usuarios',
+      component: UsuariosComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'provincias',
+      component: ProvinciasComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'cantones',
+      component: CantonesComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'distritos',
+      component: DistritosComponent,
+      canActivate: [authGuard]
+    },
+  
+    // Redirección por defecto si está logueado
+    {
+      path: '',
+      redirectTo: '/materias',
+      pathMatch: 'full'
+    },
+  
+    // Ruta comodín
+    {
+      path: '**',
+      redirectTo: '/login'
+    }
+  ];
+  

@@ -36,7 +36,7 @@ async Autenticacion(username, ClaveSinEncriptar) {
       const resultado = await bcrypt.compare(ClaveSinEncriptar, usuario.password);
       if (!resultado) throw new Error("Contraseña incorrecta");
 
-      return jwt.sign({ data: usuario.rol }, this.PalabraSecreta, { expiresIn: '1h' });
+      return jwt.sign({ data: usuario.rol, id: usuario.id }, this.PalabraSecreta, { expiresIn: '1h' });
 
   } catch (error) {
       console.error(`Error en autenticación: ${error.message}`);
@@ -50,7 +50,14 @@ async ValidarToken(solicitud) {
     if (!token) throw new Error("Token no proporcionado");
     
     const decodificado = jwt.verify(token, this.PalabraSecreta);
+    
+    // Ajustar ID solo para estudiantes entre 101-200
+    if (decodificado.data === "ESTUDIANTE" && decodificado.id >= 101 && decodificado.id <= 200) {
+      decodificado.id -= 100; // Corregir ID
+    }
+    
     return decodificado;
+    
   } catch (error) {
     console.error(`Error validando token: ${error.message}`);
     return { 
@@ -59,7 +66,6 @@ async ValidarToken(solicitud) {
     };
   }
 }
-
 
 // === MÉTODO MODIFICADO (Agregar) ===
 async Agregar(username, password, rol, estado) {
@@ -74,7 +80,32 @@ async Agregar(username, password, rol, estado) {
   }
 }
 
+// === MÉTODO LISTAR MODIFICADO PARA EXCLUIR CONTRASEÑAS ===
+Listar(id) {
+  const camposSeguros = {
+    id: true,
+    username: true,
+    rol: true,
+    estado: true,
+    fecha_creacion: true,
+    fecha_actualizacion: true
+  };
 
+  if (id === undefined) {
+    return prisma.usuarios.findMany({
+      select: camposSeguros
+    });
+  } else {
+    const idNumero = parseInt(id);
+    if (isNaN(idNumero)) {
+      throw new Error("ID inválido");
+    }
+    return prisma.usuarios.findUnique({
+      where: { id: idNumero },
+      select: camposSeguros
+    });
+  }
+}
 
   async Actualizar(id, datosActualizados) { 
     try {

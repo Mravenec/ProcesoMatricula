@@ -32,7 +32,7 @@ export class CantonesComponent {
       this.Cantones.set(JSON.parse(datosLocales));
     }
   }
-
+  
   public metodoGETCantones() {
     this.http.get<Canton[]>(this.apiUrl).subscribe({
       next: (response) => {
@@ -55,7 +55,7 @@ export class CantonesComponent {
       next: (response) => {
         this.Cantones.update(cantones => {
           const nuevos = [...cantones, response];
-          localStorage.setItem(this.storageKey, JSON.stringify(nuevos)); // Actualiza localStorage
+          localStorage.setItem(this.storageKey, JSON.stringify(nuevos)); 
           return nuevos;
         });
         this.nuevoCantonNombre = '';
@@ -76,7 +76,7 @@ export class CantonesComponent {
         this.Cantones.update(cantones => 
           cantones.map(c => c.CantonId === response.CantonId ? response : c)
         );
-        localStorage.setItem(this.storageKey, JSON.stringify(this.Cantones())); // Actualización directa
+        localStorage.setItem(this.storageKey, JSON.stringify(this.Cantones())); 
       },
       error: (err) => console.error('Error updating canton:', err)
     });
@@ -88,7 +88,7 @@ export class CantonesComponent {
         this.Cantones.update(cantones => 
           cantones.filter(c => c.CantonId !== id)
         );
-        localStorage.setItem(this.storageKey, JSON.stringify(this.Cantones())); // Actualización directa
+        localStorage.setItem(this.storageKey, JSON.stringify(this.Cantones())); 
       },
       error: (err) => console.error('Error deleting canton:', err)
     });

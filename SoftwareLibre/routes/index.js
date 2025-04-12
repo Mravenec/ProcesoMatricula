@@ -9,6 +9,7 @@ const routerMaterias= require('./materias.js');
 const routerOfertaAcademica = require('./ofertaAcademica.js');
 const routerPlanEstudios = require('./planEstudios.js');
 const routerUsuarios = require('./usuarios.js');
+const matriculaRouter = require("./matricula.js");
 
 
 
@@ -26,6 +27,7 @@ function routerAPI(app) {
   app.use('/planEstudios', routerPlanEstudios);
   app.use('/usuarios', routerUsuarios);
 
+  app.use("/matricula", matriculaRouter);
 }
 
 module.exports = routerAPI;
