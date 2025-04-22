@@ -116,13 +116,13 @@ Content-Type: application/json
 # ENDPOINTS DE MATRÍCULA 
 ################################################################################
 
-### 1. Obtener cursos disponibles para matrícula (periodo actual)
-GET http://localhost/matricula/cursos-disponibles
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+### (Primero lo agrego en Oferta Academica y luego Crea un nuevo curso a ese ID) 1. Obtener cursos disponibles para matrícula (requiere parámetro periodo)
+GET http://localhost/matricula/cursos-disponibles?periodo=2024-Q1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTM0MDQ0MSwiZXhwIjoxNzQ1MzQ0MDQxfQ.05Sqb63dg5qOI5HGOulFEbVP06B9-Ugc8pcI8nlF6es
 
-### 2. Matricularse en un curso
+### 2. Matricularse en un curso (valida periodo y créditos)
 POST http://localhost/matricula
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI5MzY0MywiZXhwIjoxNzQ1Mjk3MjQzfQ.FRduzJUaZu-s1XvLShnQUPC3cE0rKITOk8_9AxS_v4U
 Content-Type: application/json
 
 {
@@ -132,11 +132,11 @@ Content-Type: application/json
 
 ### 3. Ver mis matrículas activas
 GET http://localhost/matricula/mis-matriculas
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI5MzMyNCwiZXhwIjoxNzQ1Mjk2OTI0fQ.Llo7T08Q9f9nx-NFdCeRzpbFxEvGKF4w86cuVRpiWqg
 
-### 4. Cancelar matrícula
-DELETE http://localhost/matricula/15  
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+### 4. Cancelar matrícula (cambia estado a CANCELADA)
+DELETE http://localhost/matricula/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI5MzMyNCwiZXhwIjoxNzQ1Mjk2OTI0fQ.Llo7T08Q9f9nx-NFdCeRzpbFxEvGKF4w86cuVRpiWqg
 
 ################################################################################
 # ENDPOINTS DE USUARIOS
@@ -153,7 +153,7 @@ Content-Type: application/json
 
 ### Validar Token
 GET http://localhost/usuarios/validarToken
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxMTUsImlhdCI6MTc0NDQzNjg2NCwiZXhwIjoxNzQ0NDQwNDY0fQ.dhse1d2SxL66yzWDrXPe1AEnHOs-Amu0OY8phXEAfqc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI3ODI2NiwiZXhwIjoxNzQ1MjgxODY2fQ.EmNdWR2NbCxGMIMkT5CmZekYcpy5B9KOKM885g4T-MA
 
 ### GET: Lista todos los usuarios
 GET http://localhost/usuarios/ HTTP/1.1
@@ -273,7 +273,7 @@ Content-Type: application/json
 GET http://localhost/estudiante/ HTTP/1.1
 
 ### GET: Obtén el estudiante con ID 3
-GET http://localhost/estudiante/3 HTTP/1.1
+GET http://localhost/estudiante/48 HTTP/1.1
 
 ### POST: Crea un nuevo estudiante
 POST http://localhost/estudiante HTTP/1.1
@@ -434,7 +434,7 @@ Content-Type: application/json
   "horario": "Lunes y Miércoles 10:00-12:00",
   "aula": "A101",
   "periodo": "2025-1",
-  "ofertaAcademicaid": 1
+  "ofertaAcademicaid":  1
 }
 
 ### DELETE: Elimina el curso con ID 10

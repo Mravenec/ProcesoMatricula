@@ -1,75 +1,86 @@
-// Archivo: routes/matricula.js
 const express = require("express");
 const Router = express.Router();
-const ServicioUsuarios = require('../services/usuarios');
-const ServicioMatricula = require('../services/matricula');
+const ServicioUsuarios = require('../services/usuarios.js');
+const ServicioMatricula = require('../services/matricula.js');
 
 const usuarios = new ServicioUsuarios();
 const matricula = new ServicioMatricula();
 
-// Middleware de autenticación para estudiante
-const validarEstudiante = async (solicitud, respuesta, next) => {
+// Middleware para verificar autenticación de estudiante
+const autenticarEstudiante = async (req, res, next) => {
   try {
-    const tokenData = await usuarios.ValidarToken(solicitud);
-    
-    if (tokenData.error || tokenData.data !== "ESTUDIANTE") {
-      return respuesta.status(403).json({ 
-        error: "Acceso denegado. Requiere rol de estudiante" 
-      });
+    const resultadoValidacion = await usuarios.ValidarToken(req);
+    if (resultadoValidacion.error) {
+      return res.status(401).json({ error: resultadoValidacion.error });
     }
     
-    solicitud.estudianteId = tokenData.id;
+    // Verificar si el usuario es estudiante
+    if (resultadoValidacion.data !== "ESTUDIANTE") {
+      return res.status(403).json({ error: "Acceso denegado. Requiere rol de estudiante" });
+    }
+    
+    // Guardar el ID del estudiante para usarlo en los controladores
+    req.estudianteId = resultadoValidacion.id;
     next();
   } catch (error) {
-    respuesta.status(401).json({ error: error.message });
+    return res.status(500).json({ error: "Error en la autenticación", detalle: error.message });
   }
 };
 
-// Obtener cursos disponibles
-Router.get("/cursos-disponibles", validarEstudiante, async (solicitud, respuesta) => {
+// 1. Obtener cursos disponibles para matrícula
+Router.get("/cursos-disponibles", autenticarEstudiante, async (req, res) => {
   try {
-    const cursos = await matricula.listarCursosDisponibles("2025-1");
-    respuesta.json(cursos);
+    const periodo = req.query.periodo;
+    if (!periodo) {
+      return res.status(400).json({ error: "Se requiere especificar el periodo" });
+    }
+    
+    const cursos = await matricula.listarCursosDisponibles(periodo);
+    res.json(cursos);
   } catch (error) {
-    respuesta.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Crear nueva matrícula
-Router.post("/", validarEstudiante, async (solicitud, respuesta) => {
+// 2. Matricularse en un curso
+Router.post("/", autenticarEstudiante, async (req, res) => {
   try {
-    const { cursoId, periodo } = solicitud.body;
+    const { cursoId, periodo } = req.body;
+    
+    if (!cursoId || !periodo) {
+      return res.status(400).json({ error: "Se requieren cursoId y periodo" });
+    }
+    
     const nuevaMatricula = await matricula.agregarMatricula(
-      solicitud.estudianteId,
-      cursoId,
+      req.estudianteId, // Usando el ID del estudiante del token
+      parseInt(cursoId),
       periodo
     );
-    respuesta.json(nuevaMatricula);
+    
+    res.status(201).json(nuevaMatricula);
   } catch (error) {
-    respuesta.status(400).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 });
 
-// Listar matrículas activas
-Router.get("/mis-matriculas", validarEstudiante, async (solicitud, respuesta) => {
+// 3. Ver mis matrículas activas
+Router.get("/mis-matriculas", autenticarEstudiante, async (req, res) => {
   try {
-    const matriculas = await matricula.listarMatriculasEstudiante(solicitud.estudianteId);
-    respuesta.json(matriculas);
+    const misMatriculas = await matricula.listarMatriculasEstudiante(req.estudianteId);
+    res.json(misMatriculas);
   } catch (error) {
-    respuesta.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Cancelar matrícula
-Router.delete("/:id", validarEstudiante, async (solicitud, respuesta) => {
+// 4. Cancelar matrícula
+Router.delete("/:id", autenticarEstudiante, async (req, res) => {
   try {
-    const resultado = await matricula.cancelarMatricula(
-      parseInt(solicitud.params.id),
-      solicitud.estudianteId
-    );
-    respuesta.json(resultado);
+    const matriculaId = parseInt(req.params.id);
+    const resultado = await matricula.cancelarMatricula(matriculaId, req.estudianteId);
+    res.json(resultado);
   } catch (error) {
-    respuesta.status(400).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 });
 

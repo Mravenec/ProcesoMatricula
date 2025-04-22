@@ -112,6 +112,8 @@ model Estudiante {
   provinciaId    Int 
   provincia      Provincias @relation(fields: [provinciaId], references: [ProvinciaId]) 
   historico      HistoricoAcademico[] 
+
+  Matricula Matricula[]
 }
 
 model Materias { 
@@ -155,6 +157,8 @@ model Cursos {
   ofertaAcademica OfertaAcademica?  @relation(fields: [ofertaAcademicaid], references: [id])
 ofertaAcademicaid Int?
   historico      HistoricoAcademico[] 
+
+Matricula Matricula[]
 }
 
 
@@ -172,3 +176,12 @@ model HistoricoAcademico {
 }
 
 
+model Matricula {
+  id          Int     @id @default(autoincrement())
+  estudianteId Int
+  cursoId     Int
+  periodo     String
+  estado      String  @default("ACTIVA") // Ej: ACTIVA, CANCELADA
+  estudiante  Estudiante @relation(fields: [estudianteId], references: [id])
+  curso       Cursos     @relation(fields: [cursoId], references: [id])
+}

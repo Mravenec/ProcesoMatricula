@@ -12,10 +12,11 @@ Router.get("/", async (solicitud, respuesta) => {
     respuesta.json(listaEstudiantes);
   });
   
-  Router.get("/:id", async (solicitud, respuesta) => {
-    const estudiante = await estudiante.Listar(solicitud.params.id);
-    respuesta.json(estudiante);
-  });
+  // Corregido: nombre diferente para la variable local
+Router.get("/:id", async (solicitud, respuesta) => {
+  const estudianteEncontrado = await estudiante.Listar(solicitud.params.id); // 🚨 Variable renombrada
+  respuesta.json(estudianteEncontrado);
+});
   
   Router.post('/', async (solicitud, respuesta) => {
     const { cedula, nombre, apellido1, apellido2, fecha_nacimiento, direccion, telefono, correo, provinciaId } = solicitud.body;
