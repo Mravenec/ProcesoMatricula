@@ -10,8 +10,9 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { ProvinciasComponent } from './components/provincias/provincias.component';
 import { CantonesComponent } from './components/canton/canton.component';
 import { DistritosComponent } from './components/distrito/distrito.component'; 
-import { authGuard } from './aplicacionmatricula/auth.guard'; // Importar el guardia
-import { LoginComponent } from './aplicacionmatricula/login/login.component'; // Importar componente de login
+import { authGuard } from './aplicacionmatricula/auth.guard'; 
+import { LoginComponent } from './aplicacionmatricula/login/login.component'; 
+import { MatriculaComponent } from './components/matricula/matricula.component';
 
 export const routes: Routes = [
     // Ruta de login (pública)
@@ -21,6 +22,12 @@ export const routes: Routes = [
     },
   
     // Rutas protegidas por el authGuard
+    {
+      path: 'matricula',
+      component: MatriculaComponent,
+      canActivate: [authGuard],
+      data: { roles: ['ESTUDIANTE'] } // Asegurar que solo estudiantes pueden acceder
+    },
     {
       path: 'docente',
       component: DocenteComponent,
@@ -88,6 +95,7 @@ export const routes: Routes = [
     {
       path: '**',
       redirectTo: '/login'
-    }
+    },
+    
   ];
   

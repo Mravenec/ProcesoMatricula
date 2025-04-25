@@ -117,26 +117,26 @@ Content-Type: application/json
 ################################################################################
 
 ### (Primero lo agrego en Oferta Academica y luego Crea un nuevo curso a ese ID) 1. Obtener cursos disponibles para matrícula (requiere parámetro periodo)
-GET http://localhost/matricula/cursos-disponibles?periodo=2024-Q1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTM0MDQ0MSwiZXhwIjoxNzQ1MzQ0MDQxfQ.05Sqb63dg5qOI5HGOulFEbVP06B9-Ugc8pcI8nlF6es
+GET http://localhost/matricula/cursos-disponibles?periodo=2025-Q1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTM0MjMzMywiZXhwIjoxNzQ1MzQ1OTMzfQ.f63CDrhNkU0pv_eCBKvJekw5XSMDUjpV9GrJFs126DI
 
 ### 2. Matricularse en un curso (valida periodo y créditos)
 POST http://localhost/matricula
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI5MzY0MywiZXhwIjoxNzQ1Mjk3MjQzfQ.FRduzJUaZu-s1XvLShnQUPC3cE0rKITOk8_9AxS_v4U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTM0MjMzMywiZXhwIjoxNzQ1MzQ1OTMzfQ.f63CDrhNkU0pv_eCBKvJekw5XSMDUjpV9GrJFs126DI
 Content-Type: application/json
 
 {
   "cursoId": 5,
-  "periodo": "2025-1"
+  "periodo": "2025-Q1"
 }
 
 ### 3. Ver mis matrículas activas
 GET http://localhost/matricula/mis-matriculas
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI5MzMyNCwiZXhwIjoxNzQ1Mjk2OTI0fQ.Llo7T08Q9f9nx-NFdCeRzpbFxEvGKF4w86cuVRpiWqg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTM0MjMzMywiZXhwIjoxNzQ1MzQ1OTMzfQ.f63CDrhNkU0pv_eCBKvJekw5XSMDUjpV9GrJFs126DI
 
 ### 4. Cancelar matrícula (cambia estado a CANCELADA)
 DELETE http://localhost/matricula/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI5MzMyNCwiZXhwIjoxNzQ1Mjk2OTI0fQ.Llo7T08Q9f9nx-NFdCeRzpbFxEvGKF4w86cuVRpiWqg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTM0MjMzMywiZXhwIjoxNzQ1MzQ1OTMzfQ.f63CDrhNkU0pv_eCBKvJekw5XSMDUjpV9GrJFs126DI
 
 ################################################################################
 # ENDPOINTS DE USUARIOS
@@ -153,7 +153,7 @@ Content-Type: application/json
 
 ### Validar Token
 GET http://localhost/usuarios/validarToken
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTI3ODI2NiwiZXhwIjoxNzQ1MjgxODY2fQ.EmNdWR2NbCxGMIMkT5CmZekYcpy5B9KOKM885g4T-MA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRVNUVURJQU5URSIsImlkIjoxNDgsImlhdCI6MTc0NTM0MjMzMywiZXhwIjoxNzQ1MzQ1OTMzfQ.f63CDrhNkU0pv_eCBKvJekw5XSMDUjpV9GrJFs126DI
 
 ### GET: Lista todos los usuarios
 GET http://localhost/usuarios/ HTTP/1.1
@@ -463,7 +463,7 @@ Content-Type: application/json
 GET http://localhost/historicoAcademico/ HTTP/1.1
 
 ### GET: Obtén el histórico académico con ID 3
-GET http://localhost/historicoAcademico/3 HTTP/1.1
+GET http://localhost/historicoAcademico/48 HTTP/1.1
 
 ### POST: Crea un nuevo histórico académico
 POST http://localhost/historicoAcademico HTTP/1.1
